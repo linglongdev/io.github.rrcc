@@ -1,0 +1,52 @@
+version: "1"
+
+package:
+  id: io.github.rrcc
+  name: rrcc
+  version: 0.8.8.1
+  kind: app
+  description: |
+    RoboRock Control Center
+
+command:
+  - /opt/apps/io.github.rrcc/files/bin/rrcc
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/LazyT/rrcc.git
+    version: master
+    commit: 35cbd4f02082b2dc6f95bb8ecce4c872116c5133
+  - kind: git
+    url: https://github.com/libarchive/libarchive.git
+    version: master
+    commit: 8dbb3b4d54213f988fce77c7fa7eaf63249cdbb5
+  - kind: file
+    url: https://www.libssh.org/files/0.11/libssh-0.11.0.tar.xz
+    digest: 860e814579e7606f3fc3db98c5807bef2ab60f793ec871d81bcd23acdcdd3e91
+
+build: |
+  cd /project/linglong/sources
+  tar -xf libssh-0.11.0.tar.xz
+  cd libssh-0.11.0
+  mkdir build
+  cd build
+  cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX}
+  cmake --build . --target install -j$(nproc --all)
+
+  cd /project/linglong/sources/libarchive.git
+  mkdir -p build
+  cd build
+  cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX}
+  cmake --build . --target install -j$(nproc --all)
+
+  cd /project/linglong/sources/rrcc.git
+  git apply ../../../0001-install.patch
+  cp res/ico/app.png res/ico/rrcc.png
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install

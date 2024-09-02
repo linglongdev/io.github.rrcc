@@ -1,0 +1,58 @@
+From 344c24e59c283d40246f80b978193b4ca6c24971 Mon Sep 17 00:00:00 2001
+From: wjyrich <1071633242@qq.com>
+Date: Wed, 14 Aug 2024 17:23:21 +0800
+Subject: [PATCH] install
+ 
+---
+ rrcc.desktop | 11 +++++++++++
+ rrcc.pro     | 10 +++++++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
+ create mode 100644 rrcc.desktop
+
+diff --git a/rrcc.desktop b/rrcc.desktop
+new file mode 100644
+index 0000000..4683a68
+--- /dev/null
++++ b/rrcc.desktop
+@@ -0,0 +1,11 @@
++[Desktop Entry]
++Categories=Accessibility;Qt;Utility;
++Exec=rrcc
++Name=rrcc
++Name[zh_CN]=rrcc
++Icon=rrcc
++StartupNotify=false
++Terminal=false
++Type=Application
++GenericName=rrcc
++Version=0.8.8
+\ No newline at end of file
+diff --git a/rrcc.pro b/rrcc.pro
+index 4482685..ffef880 100644
+--- a/rrcc.pro
++++ b/rrcc.pro
+@@ -4,7 +4,7 @@ TARGET      = rrcc
+ 
+ SOURCES     += mainwindow.cpp history.cpp timer.cpp setup.cpp logger.cpp upload.cpp packager.cpp unpackager.cpp converter.cpp about.cpp zones.cpp installer.cpp uninstaller.cpp update.cpp download.cpp search.cpp onlineupd.cpp
+ HEADERS     += mainwindow.h   history.h   timer.h   setup.h   logger.h   upload.h   packager.h   unpackager.h   converter.h   about.h   zones.h   installer.h   uninstaller.h   update.h   download.h   search.h   onlineupd.h
+-
++INCLUDEPATH += $$PREFIX/include
+ INCLUDEPATH += ext/qaes
+ SOURCES     += ext/qaes/qaesencryption.cpp
+ HEADERS     += ext/qaes/qaesencryption.h
+@@ -40,3 +40,11 @@ RC_ICONS    += res/ico/app.ico
+ macx {
+ ICON        += res/ico/app.icns
+ }
++
++target.path = $$PREFIX/bin
++desktop.files = rrcc.desktop
++desktop.path = $$PREFIX/share/applications/
++icons.path = $$PREFIX/share/icons
++icons.files = res/ico/rrcc.png
++
++INSTALLS += target desktop icons
+\ No newline at end of file
+-- 
+2.43.4
+
